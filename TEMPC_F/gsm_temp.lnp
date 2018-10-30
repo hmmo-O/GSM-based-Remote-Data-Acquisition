@@ -1,0 +1,3 @@
+"gsm_agri_temp.obj" 
+TO "gsm_temp" 
+CODE( 0X0000-0X0FFF )

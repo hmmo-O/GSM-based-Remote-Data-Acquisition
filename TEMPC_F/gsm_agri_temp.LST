@@ -1,0 +1,520 @@
+C51 COMPILER V8.05a   GSM_AGRI_TEMP                                                        06/24/2015 15:00:57 PAGE 1   
+
+
+C51 COMPILER V8.05a, COMPILATION OF MODULE GSM_AGRI_TEMP
+OBJECT MODULE PLACED IN gsm_agri_temp.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE gsm_agri_temp.c LARGE BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include<reg51.h>
+   2          #include<intrins.h>
+   3          #include<string.h>
+   4          #include"uart.h"
+   5          #include"lcd.h"
+   6          #define fac 1.8
+   7          
+   8          
+   9          sbit dq = P3^5; // connect with DS1820 Data pin
+  10          
+  11          
+  12          bit l1,l2,l3;
+  13            
+  14          unsigned char mobilenum[20],msg[40];
+  15          unsigned  char numcnt,b11,XX,newmsg=0,v,c,temp;
+  16          unsigned int i,k;
+  17          void readmsg(void); 
+  18          void sendmsg(int);
+  19          //void LCD_conv(unsigned char );
+  20          void delay_ms(int j)
+  21          {
+  22   1      unsigned char i;
+  23   1      
+  24   1      for(;j;j--)
+  25   1      for(i=122;i<=0;i--);
+  26   1      }
+  27          void delayus(int us)
+  28          {
+  29   1      int i;
+  30   1      for (i=0; i<us; i++);
+  31   1      }
+  32          bit reset(void)
+  33          {
+  34   1      bit presence;
+  35   1      dq = 0;
+  36   1      delayus(29);
+  37   1      dq = 1;
+  38   1      delayus(3);
+  39   1      presence = dq;
+  40   1      delayus(25);
+  41   1      return(presence);
+  42   1      }
+  43          
+  44          bit readbit(void)
+  45          {
+  46   1      unsigned char i=0;
+  47   1      dq = 0;
+  48   1      dq=1;
+  49   1      for (i=0; i < 3; i++);
+  50   1      return(dq);
+  51   1      }
+  52          
+  53          
+  54          void writebit(bit Dbit)
+  55          {
+C51 COMPILER V8.05a   GSM_AGRI_TEMP                                                        06/24/2015 15:00:57 PAGE 2   
+
+  56   1      unsigned char i=0;
+  57   1      dq=0;
+  58   1      dq = Dbit?1:0;
+  59   1      delayus(5);
+  60   1      dq = 1;
+  61   1      }
+  62          
+  63          unsigned char readbyte(void)
+  64          {
+  65   1      unsigned char i;
+  66   1      unsigned char din = 0;
+  67   1      for (i=0;i<8;i++)
+  68   1      {
+  69   2      din|=readbit()? 0x01<<i:din;
+  70   2      delayus(6);
+  71   2      }
+  72   1      return(din);
+  73   1      }
+  74          
+  75          void writebyte(unsigned char dout)
+  76          {
+  77   1      unsigned char i;
+  78   1      for (i=0; i<8; i++)
+  79   1      {
+  80   2      writebit((bit)(dout & 0x1));
+  81   2      dout = dout >> 1;
+  82   2      }
+  83   1      delayus(5);
+  84   1      }
+  85          
+  86          unsigned char * ReadTemp()
+  87          {
+  88   1      unsigned char n;
+  89   1      unsigned char buff[2]=0;
+  90   1      reset();
+  91   1      
+  92   1      writebyte(0xcc);
+  93   1      writebyte(0x44);
+  94   1      
+  95   1      while (readbyte()==0xff);
+  96   1      delay_ms(500);
+  97   1      
+  98   1      reset();
+  99   1      
+ 100   1      writebyte(0xcc);
+ 101   1      writebyte(0xbe);
+ 102   1      
+ 103   1      
+ 104   1      for (n=0; n<9; n++)
+ 105   1      buff[n]=readbyte();
+ 106   1      
+ 107   1      return buff;
+ 108   1      }
+ 109          
+ 110          
+ 111          void gsm_conv(unsigned char h)
+ 112          {
+ 113   1      unsigned char temp,x,y,x1,y1;
+ 114   1      temp=h;
+ 115   1      x=temp/100;                                             
+ 116   1      y=temp%100;
+ 117   1      x1=y/10;
+C51 COMPILER V8.05a   GSM_AGRI_TEMP                                                        06/24/2015 15:00:57 PAGE 3   
+
+ 118   1      y1=y%10;
+ 119   1      x=x|0x30;
+ 120   1      x1=x1|0x30;
+ 121   1      y1=y1|0x30;
+ 122   1      ch_send_to_modem(x);
+ 123   1      ch_send_to_modem(x1);
+ 124   1      ch_send_to_modem(y1);
+ 125   1      delay(500); 
+ 126   1      }
+ 127          /*void gsm_conv(unsigned char h1)
+ 128          {
+ 129          unsigned char temp,x,y,x1,y1;
+ 130          temp=h1;
+ 131          x=temp/100;                                             
+ 132          y=temp%100;
+ 133          x1=y/10;
+ 134          y1=y%10;
+ 135          x=x|0x30;
+ 136          x1=x1|0x30;
+ 137          y1=y1|0x30;
+ 138          ch_send_to_modem(x);
+ 139          ch_send_to_modem(x1);
+ 140          ch_send_to_modem(y1);
+ 141          ch_send_to_modem(223);  
+ 142                   ch_send_to_modem('F');
+ 143                   delay(500);
+ 144          }*/       
+ 145          void LCD_conv(unsigned char g)
+ 146          {  
+ 147   1      unsigned char temp;
+ 148   1      temp=g;
+ 149   1      //x=temp/100;                                           
+ 150   1      //y=temp%100;
+ 151   1      //x1=y/10;
+ 152   1      //y1=y%10;
+ 153   1      //x=x|0x30;
+ 154   1      //x1=x1|0x30;
+ 155   1      //y1=y1|0x30;
+ 156   1      
+ 157   1        delay(10); 
+ 158   1      lcddata((temp/1000)|0x30);
+ 159   1      lcddata(((temp/100)%10)|0x30);
+ 160   1      lcddata(((temp/10)%10)|0x30);
+ 161   1      
+ 162   1      lcddata((temp%10)|0x30);
+ 163   1      
+ 164   1        //delay(100); 
+ 165   1      }
+ 166          
+ 167          
+ 168          
+ 169          
+ 170          
+ 171          
+ 172          
+ 173           /*** serial interrupt function to recieve the data from gsm modem****/
+ 174          void serintr(void) interrupt 4
+ 175          {
+ 176   1       if(RI==1)
+ 177   1       {               
+ 178   2        XX=SBUF;                                      
+ 179   2        if(XX=='+')
+C51 COMPILER V8.05a   GSM_AGRI_TEMP                                                        06/24/2015 15:00:57 PAGE 4   
+
+ 180   2         newmsg=1;
+ 181   2        RI=0;         
+ 182   2       }
+ 183   1      }
+ 184            unsigned char tp;
+ 185            unsigned int tf;
+ 186          
+ 187          void main()
+ 188          { 
+ 189   1        unsigned char msgtype=0; 
+ 190   1         unsigned char *temp,t=0x00;
+ 191   1         //float b;
+ 192   1         //int f;
+ 193   1      
+ 194   1        l1=l2=1;
+ 195   1        l3=0;
+ 196   1      
+ 197   1        lcd_init();              //intialization of lcd
+ 198   1        lcd_init();              //intialization of lcd
+ 199   1        UART_init();
+ 200   1        msgdisplay("Welcome");           //display string on lcd of lcd
+ 201   1        lcdcmd(0xc0);                    // move the cursor to 0xc0 location on lcd
+ 202   1        delay(1000); 
+ 203   1        lcdcmd(0x01);                    
+ 204   1        msgdisplay("Checking for");
+ 205   1        lcdcmd(0xc0);
+ 206   1        msgdisplay("GSM modem");
+ 207   1        delay(300); 
+ 208   1        send_to_modem("AT&F");   //to avoid echo signals,
+ 209   1        enter();
+ 210   1        delay(500);
+ 211   1        
+ 212   1        send_to_modem("ATE0");   //to avoid echo signals,
+ 213   1        enter();
+ 214   1        delay(500);
+ 215   1        RI=0;
+ 216   1      
+ 217   1         send_to_modem("AT");  // TO CHECKING GSM MODEM...
+ 218   1          enter();
+ 219   1              delay(1000);
+ 220   1         //if(!RI)              // Here we are waiting for data whitch is sending by GSM modem  
+ 221   1          // goto again;
+ 222   1      
+ 223   1      
+ 224   1               while(RI==0);
+ 225   1               RI=0;
+ 226   1           
+ 227   1               EA=1;
+ 228   1               ES=1;
+ 229   1       
+ 230   1           lcdcmd(0x01);
+ 231   1           msgdisplay("SYSTEM");
+ 232   1           lcdcmd(0xc3); 
+ 233   1           msgdisplay("CONNECTED");
+ 234   1           delay(100);
+ 235   1               send_to_modem("AT+CREG=0");  // 
+ 236   1           enter();
+ 237   1           delay(1000);
+ 238   1               newmsg=0;
+ 239   1               
+ 240   1           lcdcmd(0x01);
+ 241   1         msgdisplay("CHEKING SIM");
+C51 COMPILER V8.05a   GSM_AGRI_TEMP                                                        06/24/2015 15:00:57 PAGE 5   
+
+ 242   1           send_to_modem("AT+CPIN?");  
+ 243   1           enter();
+ 244   1               delay(1500); 
+ 245   1      
+ 246   1               while(newmsg==0);       
+ 247   1               
+ 248   1               lcdcmd(0xC0);
+ 249   1           msgdisplay("SIM CONNECTED");
+ 250   1           delay(500);
+ 251   1               send_to_modem("AT+CNMI=1,1,0,0");  // tr set message format astext mode
+ 252   1           enter();
+ 253   1               delay(700);
+ 254   1               send_to_modem("AT+CREG=0");  // tr set message format astext mode
+ 255   1           enter();
+ 256   1               delay(700);
+ 257   1               
+ 258   1               send_to_modem("AT+CMGF=1");  // to set message format astext mode
+ 259   1           enter();
+ 260   1               delay(100);
+ 261   1               send_to_modem("AT+CMGD=1");  // to set message format astext mode
+ 262   1           enter();
+ 263   1               delay(100);
+ 264   1               send_to_modem("AT+CMGD=2");  // to set message format astext mode
+ 265   1           enter();
+ 266   1               delay(100);
+ 267   1               send_to_modem("AT+CMGD=3");  // to set message format astext mode
+ 268   1           enter();
+ 269   1               delay(100);
+ 270   1              
+ 271   1               
+ 272   1      
+ 273   1               newmsg=0;
+ 274   1      
+ 275   1                                                                                               
+ 276   1           delay(500);
+ 277   1               ES=0;
+ 278   1              
+ 279   1        start:
+ 280   1        delay(500);
+ 281   1        lcdcmd(0x01);
+ 282   1      
+ 283   1         //delay(500);
+ 284   1         ES=0;
+ 285   1        newmsg=0;
+ 286   1        
+ 287   1        ES=1;
+ 288   1         
+ 289   1        while(newmsg==0)
+ 290   1        {     
+ 291   2      temp=ReadTemp();
+ 292   2      
+ 293   2      temp[1]=temp[1]&0x07;
+ 294   2      
+ 295   2      tp=temp[0]>>4;
+ 296   2      temp[1]=temp[1]<<4;
+ 297   2      
+ 298   2      tp=tp+temp[1];
+ 299   2      tf=(tp*fac)+32;
+ 300   2      
+ 301   2      lcdcmd(0x80);
+ 302   2        delay(10); 
+ 303   2        msgdisplay("TEMP:"); LCD_conv(tp);
+C51 COMPILER V8.05a   GSM_AGRI_TEMP                                                        06/24/2015 15:00:57 PAGE 6   
+
+ 304   2      lcddata(223);
+ 305   2      lcddata('c');
+ 306   2      
+ 307   2      
+ 308   2      
+ 309   2         
+ 310   2         
+ 311   2      
+ 312   2      
+ 313   2         lcdcmd(0xc0);
+ 314   2        delay(10); 
+ 315   2        msgdisplay("TEMP:");LCD_conv(tf);
+ 316   2      
+ 317   2      lcddata(223);
+ 318   2      lcddata('F');
+ 319   2      lcdcmd(0x02);    
+ 320   2      
+ 321   2                }  
+ 322   1      delay(500);
+ 323   1                
+ 324   1         ES=0;
+ 325   1         delay(100);
+ 326   1         readmsg();  //read message 
+ 327   1         lcdcmd(0x01);  
+ 328   1           msgdisplay(msg);    //display message
+ 329   1         delay(90);   
+ 330   1         lcdcmd(0xc0);
+ 331   1          msgdisplay(mobilenum);
+ 332   1          delay(500);    
+ 333   1         lcdcmd(0x01);
+ 334   1          msgdisplay("Sendng Message....");
+ 335   1       
+ 336   1              if(!strcmp(msg,"GET TEMPC"))
+ 337   1         {
+ 338   2           
+ 339   2              // msgdisplay("TEMP:");
+ 340   2               msgtype=6;
+ 341   2              sendmsg(6);
+ 342   2         }
+ 343   1              else if(!strcmp(msg,"GET TEMPF"))
+ 344   1         {
+ 345   2           
+ 346   2              // msgdisplay("TEMP:");
+ 347   2               msgtype=7;
+ 348   2              sendmsg(7);
+ 349   2         }
+ 350   1       
+ 351   1        else;
+ 352   1       
+ 353   1       goto start;
+ 354   1      }
+ 355          
+ 356          void sendmsg(int msgtype)
+ 357          {
+ 358   1          delay(1000);
+ 359   1              lcdcmd(0xc0);
+ 360   1          send_to_modem("AT+CMGS=");  //send messsage sending command to GSM modem
+ 361   1          ch_send_to_modem('"');
+ 362   1          send_to_modem(mobilenum);   // send mobile number
+ 363   1          ch_send_to_modem('"');
+ 364   1          enter();                              //select message
+ 365   1          delay(500);
+C51 COMPILER V8.05a   GSM_AGRI_TEMP                                                        06/24/2015 15:00:57 PAGE 7   
+
+ 366   1               if(msgtype==6)
+ 367   1           {
+ 368   2                 send_to_modem("Temp_c:");
+ 369   2                 delay(1000);
+ 370   2             gsm_conv(tp);
+ 371   2                 send_to_modem("°c");
+ 372   2                 enter();
+ 373   2                 //delay(100);
+ 374   2                 //gsm_conv(tf);
+ 375   2                 //send_to_modem("°f");
+ 376   2                 //enter();
+ 377   2                 //delay(100);
+ 378   2                        
+ 379   2           }
+ 380   1               if(msgtype==7)
+ 381   1           {
+ 382   2                 send_to_modem("Temp_f:");
+ 383   2                 delay(1000);
+ 384   2             //gsm_conv(tp);
+ 385   2                 //send_to_modem("°c");
+ 386   2                // enter();
+ 387   2                 //delay(100);
+ 388   2                 gsm_conv(tf);
+ 389   2                 send_to_modem("°f");
+ 390   2                 enter();
+ 391   2                 delay(100);
+ 392   2                        
+ 393   2           }                                                                   
+ 394   1               else;   
+ 395   1           delay(1500);
+ 396   1           ch_send_to_modem(0x1A);   //CONTROL Z
+ 397   1               delay(500);
+ 398   1               ch_send_to_modem(0x1A);
+ 399   1               ES=1;
+ 400   1               delay(2000);
+ 401   1      
+ 402   1               lcdcmd(0x01);
+ 403   1               msgdisplay("MESSAGE SENT");
+ 404   1               delay(1500);
+ 405   1                      send_to_modem("AT+CMGD=1");
+ 406   1                  enter();
+ 407   1                       ES=0;
+ 408   1               delay(500);
+ 409   1                      
+ 410   1                               
+ 411   1               delay(100);     
+ 412   1              RI=0;
+ 413   1              lcdcmd(0xc0);
+ 414   1              msgdisplay("OK");               
+ 415   1       }
+ 416          
+ 417          
+ 418          
+ 419          
+ 420          
+ 421          void readmsg(void)         
+ 422          {
+ 423   1       unsigned char a9,b9,i9,count9,numcnt;
+ 424   1        
+ 425   1       delay(100);
+ 426   1       ES=1;
+ 427   1       delay(300);
+C51 COMPILER V8.05a   GSM_AGRI_TEMP                                                        06/24/2015 15:00:57 PAGE 8   
+
+ 428   1       ES=0;
+ 429   1        
+ 430   1       while(RI==1)
+ 431   1        {
+ 432   2          RI=0;
+ 433   2          delay(100);
+ 434   2        }
+ 435   1        
+ 436   1       send_to_modem("AT+CMGR=1");
+ 437   1       enter();
+ 438   1       
+ 439   1       count9=0;
+ 440   1       i9=0;
+ 441   1       a9=0;
+ 442   1       numcnt=0;
+ 443   1      
+ 444   1       while(count9!=3)
+ 445   1        {
+ 446   2           while(RI==0);
+ 447   2           b9=SBUF;
+ 448   2       
+ 449   2               if((b9==',')||(a9==1))
+ 450   2            {
+ 451   3              if(numcnt<15)
+ 452   3                  {
+ 453   4                   if(numcnt>4)
+ 454   4                    {
+ 455   5                 mobilenum[numcnt-5]=b9;
+ 456   5                    }
+ 457   4                 a9=1;
+ 458   4                     numcnt++;
+ 459   4                      }
+ 460   3                       else
+ 461   3                          a9=0;
+ 462   3                }
+ 463   2                      if(count9==2)
+ 464   2                       {
+ 465   3                        msg[i9++]=SBUF;
+ 466   3                       }          
+ 467   2                      RI=0;
+ 468   2                      if(b9==10)
+ 469   2                       count9+=1;
+ 470   2              }
+ 471   1                            
+ 472   1                                msg[--i9]='\0';
+ 473   1                            msg[--i9]='\0';
+ 474   1                            mobilenum[10]='\0';
+ 475   1                      
+ 476   1              send_to_modem("AT+CMGD=1");
+ 477   1                  enter();
+ 478   1              RI=0;            
+ 479   1              delay(1000);
+ 480   1              RI=0;                    
+ 481   1       }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   1935    ----
+   CONSTANT SIZE    =    266    ----
+   XDATA SIZE       =     74      24
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+C51 COMPILER V8.05a   GSM_AGRI_TEMP                                                        06/24/2015 15:00:57 PAGE 9   
+
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      3       2
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

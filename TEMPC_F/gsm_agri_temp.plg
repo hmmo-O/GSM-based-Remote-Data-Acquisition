@@ -1,0 +1,236 @@
+<html>
+<body>
+<pre>
+<h1>µVision3 Build Log</h1>
+<h2>Project:</h2>
+E:\embedded\prolific_projects_2015_pujyasri\gsm_temp\gsm_agricultr\gsm_agri_temp.uv2
+Project File Date:  04/14/2015
+
+<h2>Output:</h2>
+Build target 'Target 1'
+compiling gsm_agri_temp.c...
+linking...
+Program Size: data=89.3 xdata=0 code=3338
+creating hex file from "gsm_agri_temp"...
+"gsm_agri_temp" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling gsm_agri_temp.c...
+GSM_AGRI_TEMP.C(360): error C202: 'sw1': undefined identifier
+GSM_AGRI_TEMP.C(362): error C202: 'sw1': undefined identifier
+Target not created
+Build target 'Target 1'
+compiling gsm_agri_temp.c...
+GSM_AGRI_TEMP.C(448): error C141: syntax error near '500'
+GSM_AGRI_TEMP.C(448): error C231: '_delay': redefinition
+GSM_AGRI_TEMP.C(450): error C231: 'ES': redefinition
+GSM_AGRI_TEMP.C(450): error C231: 'ES': redefinition
+GSM_AGRI_TEMP.C(451): error C141: syntax error near '1000'
+GSM_AGRI_TEMP.C(451): error C231: '_delay': redefinition
+GSM_AGRI_TEMP.C(452): error C231: 'readmsg': redefinition
+GSM_AGRI_TEMP.C(453): error C141: syntax error near '0x01'
+GSM_AGRI_TEMP.C(453): error C231: '_lcdcmd': redefinition
+GSM_AGRI_TEMP.C(454): error C231: '_msgdisplay': redefinition
+GSM_AGRI_TEMP.C(455): error C141: syntax error near '500'
+GSM_AGRI_TEMP.C(455): error C231: '_delay': redefinition
+GSM_AGRI_TEMP.C(456): error C141: syntax error near '0x01'
+GSM_AGRI_TEMP.C(456): error C231: '_lcdcmd': redefinition
+GSM_AGRI_TEMP.C(458): error C141: syntax error near 'if'
+GSM_AGRI_TEMP.C(458): error C141: syntax error near '!'
+GSM_AGRI_TEMP.C(458): error C141: syntax error near '<string>'
+GSM_AGRI_TEMP.C(458): error C141: syntax error near ')'
+GSM_AGRI_TEMP.C(460): error C231: 'l1': redefinition
+GSM_AGRI_TEMP.C(461): error C231: 'motor': redefinition
+GSM_AGRI_TEMP.C(461): error C231: 'motor': redefinition
+GSM_AGRI_TEMP.C(462): error C141: syntax error near '<string>'
+GSM_AGRI_TEMP.C(462): error C231: '_msgdisplay': redefinition
+GSM_AGRI_TEMP.C(464): error C141: syntax error near '2'
+GSM_AGRI_TEMP.C(464): error C231: '_sendmsg': redefinition
+GSM_AGRI_TEMP.C(465): error C141: syntax error near '}'
+GSM_AGRI_TEMP.C(467): error C141: syntax error near '!'
+GSM_AGRI_TEMP.C(467): error C141: syntax error near '<string>'
+GSM_AGRI_TEMP.C(467): error C141: syntax error near ')'
+GSM_AGRI_TEMP.C(469): error C279: 'l1': multiple initialization
+GSM_AGRI_TEMP.C(470): error C279: 'motor': multiple initialization
+GSM_AGRI_TEMP.C(470): error C231: 'motor': redefinition
+GSM_AGRI_TEMP.C(470): error C231: 'motor': redefinition
+GSM_AGRI_TEMP.C(470): error C141: syntax error near ';'
+GSM_AGRI_TEMP.C(471): error C141: syntax error near '<string>'
+GSM_AGRI_TEMP.C(471): error C231: '_msgdisplay': redefinition
+GSM_AGRI_TEMP.C(472): error C279: 'msgtype': multiple initialization
+GSM_AGRI_TEMP.C(473): error C141: syntax error near '3'
+GSM_AGRI_TEMP.C(473): error C231: '_sendmsg': redefinition
+GSM_AGRI_TEMP.C(474): error C141: syntax error near '}'
+GSM_AGRI_TEMP.C(476): error C141: syntax error near '!'
+GSM_AGRI_TEMP.C(476): error C141: syntax error near '<string>'
+GSM_AGRI_TEMP.C(476): error C141: syntax error near ')'
+GSM_AGRI_TEMP.C(480): error C279: 'msgtype': multiple initialization
+GSM_AGRI_TEMP.C(481): error C141: syntax error near '6'
+GSM_AGRI_TEMP.C(481): error C231: '_sendmsg': redefinition
+GSM_AGRI_TEMP.C(482): error C141: syntax error near '}'
+GSM_AGRI_TEMP.C(484): error C141: syntax error near '!'
+GSM_AGRI_TEMP.C(484): error C141: syntax error near '<string>'
+GSM_AGRI_TEMP.C(484): error C141: syntax error near ')'
+GSM_AGRI_TEMP.C(488): error C279: 'msgtype': multiple initialization
+GSM_AGRI_TEMP.C(489): error C141: syntax error near '5'
+GSM_AGRI_TEMP.C(489): error C231: '_sendmsg': redefinition
+GSM_AGRI_TEMP.C(490): error C141: syntax error near '}'
+GSM_AGRI_TEMP.C(492): error C141: syntax error near '!'
+GSM_AGRI_TEMP.C(492): error C141: syntax error near '<string>'
+GSM_AGRI_TEMP.C(492): error C141: syntax error near ')'
+GSM_AGRI_TEMP.C(497): error C279: 'msgtype': multiple initialization
+GSM_AGRI_TEMP.C(498): error C141: syntax error near '4'
+GSM_AGRI_TEMP.C(498): error C231: '_sendmsg': redefinition
+GSM_AGRI_TEMP.C(499): error C141: syntax error near '}'
+GSM_AGRI_TEMP.C(511): error C231: 'start': redefinition
+GSM_AGRI_TEMP.C(512): error C141: syntax error near '}'
+Target not created
+Build target 'Target 1'
+compiling gsm_agri_temp.c...
+linking...
+Program Size: data=89.3 xdata=0 code=3338
+creating hex file from "gsm_agri_temp"...
+"gsm_agri_temp" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling gsm_agri_temp.c...
+linking...
+Program Size: data=89.3 xdata=0 code=3316
+creating hex file from "gsm_agri_temp"...
+"gsm_agri_temp" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling gsm_agri_temp.c...
+GSM_AGRI_TEMP.C(321): warning C206: 'read1': missing function-prototype
+GSM_AGRI_TEMP.C(329): warning C206: 'read2': missing function-prototype
+linking...
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  READ1
+    MODULE:  gsm_agri_temp.obj (GSM_AGRI_TEMP)
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  READ2
+    MODULE:  gsm_agri_temp.obj (GSM_AGRI_TEMP)
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  READ1
+    MODULE:  gsm_agri_temp.obj (GSM_AGRI_TEMP)
+    ADDRESS: 026CH
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  READ2
+    MODULE:  gsm_agri_temp.obj (GSM_AGRI_TEMP)
+    ADDRESS: 027FH
+Program Size: data=89.3 xdata=0 code=3084
+creating hex file from "gsm_agri_temp"...
+"gsm_agri_temp" - 0 Error(s), 6 Warning(s).
+Build target 'Target 1'
+compiling gsm_agri_temp.c...
+linking...
+Program Size: data=89.3 xdata=0 code=2782
+creating hex file from "gsm_agri_temp"...
+"gsm_agri_temp" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling gsm_agri_temp.c...
+linking...
+Program Size: data=89.3 xdata=0 code=2576
+creating hex file from "gsm_agri_temp"...
+"gsm_agri_temp" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling gsm_agri_temp.c...
+GSM_AGRI_TEMP.C(140): error C202: 'motor': undefined identifier
+GSM_AGRI_TEMP.C(291): error C202: 'motor': undefined identifier
+Target not created
+Build target 'Target 1'
+compiling gsm_agri_temp.c...
+GSM_AGRI_TEMP.C(291): error C202: 'motor': undefined identifier
+Target not created
+Build target 'Target 1'
+compiling gsm_agri_temp.c...
+linking...
+Program Size: data=89.3 xdata=0 code=2570
+creating hex file from "gsm_agri_temp"...
+"gsm_agri_temp" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling gsm_agri_temp.c...
+GSM_AGRI_TEMP.C(142): error C202: 'buzzer': undefined identifier
+GSM_AGRI_TEMP.C(143): error C202: 'buzzer': undefined identifier
+Target not created
+Build target 'Target 1'
+compiling gsm_agri_temp.c...
+linking...
+Program Size: data=89.3 xdata=0 code=2566
+creating hex file from "gsm_agri_temp"...
+"gsm_agri_temp" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling gsm_agri_temp.c...
+linking...
+Program Size: data=89.3 xdata=0 code=2566
+creating hex file from "gsm_agri_temp"...
+"gsm_agri_temp" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling gsm_agri_temp.c...
+linking...
+Program Size: data=89.3 xdata=0 code=2504
+creating hex file from "gsm_agri_temp"...
+"gsm_agri_temp" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling gsm_agri_temp.c...
+linking...
+Program Size: data=89.3 xdata=0 code=2504
+creating hex file from "gsm_agri_temp"...
+"gsm_agri_temp" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling gsm_agri_temp.c...
+linking...
+Program Size: data=89.3 xdata=0 code=2504
+creating hex file from "gsm_agri_temp"...
+"gsm_agri_temp" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling gsm_agri_temp.c...
+linking...
+Program Size: data=89.3 xdata=0 code=2504
+creating hex file from "gsm_agri_temp"...
+"gsm_agri_temp" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling gsm_agri_temp.c...
+linking...
+Program Size: data=89.3 xdata=0 code=2504
+creating hex file from "gsm_agri_temp"...
+"gsm_agri_temp" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling gsm_agri_temp.c...
+linking...
+Program Size: data=89.3 xdata=0 code=2312
+creating hex file from "gsm_agri_temp"...
+"gsm_agri_temp" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling gsm_agri_temp.c...
+linking...
+Program Size: data=89.3 xdata=0 code=2326
+creating hex file from "gsm_agri_temp"...
+"gsm_agri_temp" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling gsm_agri_temp.c...
+linking...
+Program Size: data=89.3 xdata=0 code=2326
+creating hex file from "gsm_agri_temp"...
+"gsm_agri_temp" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling gsm_agri_temp.c...
+linking...
+Program Size: data=89.3 xdata=0 code=2326
+creating hex file from "gsm_agri_temp"...
+"gsm_agri_temp" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling gsm_agri_temp.c...
+linking...
+Program Size: data=89.3 xdata=0 code=2326
+creating hex file from "gsm_agri_temp"...
+"gsm_agri_temp" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling gsm_agri_temp.c...
+linking...
+Program Size: data=89.3 xdata=0 code=2326
+creating hex file from "gsm_agri_temp"...
+"gsm_agri_temp" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling gsm_agri_temp.c...
+linking...
+Program Size: data=89.3 xdata=0 code=2326
+creating hex file from "gsm_agri_temp"...
+"gsm_agri_temp" - 0 Error(s), 0 Warning(s).
