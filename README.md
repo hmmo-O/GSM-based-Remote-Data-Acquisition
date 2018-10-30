@@ -1,5 +1,6 @@
 # GSM-based-Remote-Data-Acquisition
 TL;DR: A data acquisition system which can send data and receive commands from any cellular network.
+
 Used Components:
   * ATMEL AT89S52 (8051)
   * MAX232
