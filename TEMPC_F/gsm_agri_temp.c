@@ -15,54 +15,61 @@ unsigned int i,k;
 void readmsg(void); 
 void sendmsg(int);
 //void LCD_conv(unsigned char );
-void delay_ms(int j)
+
+//------------------------------------------
+// DS18B20 driver for a 1-wire bus.
+// Exceprt taken from Anurag Chugh 
+//http://read.pudn.com/downloads152/sourcecode/embed/664659/Source%20Code/DS1820.H__.htm
+//------------------------------------------
+void delay_ms(int j)	//1 Milli Second Delay @ 11.0592MHz Crystal
 {
   unsigned char i;
-
   for(;j;j--)
     for(i=122;i<=0;i--);
 }
-void delayus(int us)
-{
-  int i;
+
+void delayus(int us)	//1 Micro Second Delay @ 11.0592MHz Crystal
+{			//Calling the routine takes about 22us and then
+  int i;		//each count takes another 17us.
   for (i=0; i<us; i++);
 }
-bit reset(void)
+
+bit reset(void)		//Resetting the Temperature sensor's value
 {
   bit presence;
-  dq = 0;
-  delayus(29);
-  dq = 1;
-  delayus(3);
-  presence = dq;
-  delayus(25);
+  dq = 0;		//pull DQ line low
+  delayus(29);		//leave it low for about 490us
+  dq = 1;		//allow line to high
+  delayus(3);		//wait for 55us
+  presence = dq;	//get present signal
+  delayus(25);		//wait for end of timeslot 316us
   return(presence);
 }
 
-bit readbit(void)
+bit readbit(void)	//Reading 1 but from DS18B20
 {
   unsigned char i=0;
-  dq = 0;
+  dq = 0;		//pull low to start time
   dq=1;
-  for (i=0; i < 3; i++);
-  return(dq);
+  for (i=0; i < 3; i++);	//delay for 17us from start
+  return(dq);	//return the value
 }
 
 
-void writebit(bit Dbit)
+void writebit(bit Dbit)	//Write 1 bit to DS18B20
 {
   unsigned char i=0;
   dq=0;
   dq = Dbit?1:0;
-  delayus(5);
+  delayus(5);		//delay about 39us
   dq = 1;
 }
 
-unsigned char readbyte(void)
+unsigned char readbyte(void)	//Read 1 byte from DS18B20
 {
   unsigned char i;
   unsigned char din = 0;
-  for (i=0;i<8;i++)
+  for (i=0;i<8;i++)	//reads byte, 1 bit at a time
   {
     din|=readbit()? 0x01<<i:din;
     delayus(6);
@@ -70,38 +77,36 @@ unsigned char readbyte(void)
   return(din);
 }
 
-void writebyte(unsigned char dout)
+void writebyte(unsigned char dout)	//Write 1 byte to ROM
 {
   unsigned char i;
-  for (i=0; i<8; i++)
+  for (i=0; i<8; i++)	//writes byte, 1 bit at a time
   {
-    writebit((bit)(dout & 0x1));
+    writebit((bit)(dout & 0x1));	//write bit in temperature
     dout = dout >> 1;
   }
   delayus(5);
 }
 
-unsigned char * ReadTemp()
+unsigned char * ReadTemp()	//Read Temperature
 {
   unsigned char n;
   unsigned char buff[2]=0;
   reset();
-
-  writebyte(0xcc);
-  writebyte(0x44);
-
-  while (readbyte()==0xff);
+  writebyte(0xcc);		//skip ROM
+  writebyte(0x44);		//perform temperature conversion
+  while (readbyte()==0xff);	//wait for conversion complete
   delay_ms(500);
-
   reset();
-  writebyte(0xcc);
-  writebyte(0xbe);
+  writebyte(0xcc);		//skip ROM
+  writebyte(0xbe);		//read the result
 
-  for (n=0; n<9; n++)
-    buff[n]=readbyte();
+  for (n=0; n<9; n++)		//read 9 bytes but use only one byte
+    buff[n]=readbyte();		//read DS18B20
 	
   return buff;
 }
+//-----------------------------------------------------------------//
 
 void gsm_conv(unsigned char h)
 {
@@ -221,7 +226,7 @@ void main()
   lcdcmd(0xc3); 
   msgdisplay("CONNECTED");
   delay(100);
-  send_to_modem("AT+CREG=0");  // 
+  send_to_modem("AT+CREG=0"); 
   enter();
   delay(1000);
   newmsg=0;
